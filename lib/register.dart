@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:miniproj/foodlist.dart';
+import 'package:miniproj/forgetpass.dart';
 import 'package:miniproj/main.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -16,6 +18,12 @@ class _RegisterPageState extends State<RegisterPage> {
     const appTitle = 'สมัครสมาชิก';
     return MaterialApp(
       title: appTitle,
+      routes: {
+        '/login': (context) => const MyApp(),
+        '/register': (context) => const RegisterPage(),
+        '/forget': (context) => const ForgetPassPage(),
+        '/foodlist': (context) => const FoodListPage(),
+      },
       home: Scaffold(
         resizeToAvoidBottomInset: false,
         backgroundColor: Colors.red,
@@ -101,6 +109,8 @@ class _MyCustomFormState extends State<MyCustomForm> {
             email: email.text.trim(),
             password: password.text.trim(),
           );
+
+          Navigator.popAndPushNamed(context, '/login');
         } on FirebaseAuthException catch (e) {
           if (e.code == 'weak-password') {
             print('The password providede is too weak');
