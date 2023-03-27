@@ -14,12 +14,10 @@ class FoodListPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      // routes: {
-      //   '/home': (context) => const MyHomePage(title: 'Flutter Demo Home Page'),
-      // },
+      debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
-        primarySwatch: Colors.grey,
+        primarySwatch: Colors.red,
       ),
       home: const myPage(title: 'แมวเป้ารีวิว'),
       routes: {
@@ -36,15 +34,6 @@ class FoodListPage extends StatelessWidget {
 
 class myPage extends StatefulWidget {
   const myPage({super.key, required this.title});
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
 
   final String title;
 
@@ -93,7 +82,7 @@ class _myPageState extends State<myPage> {
           Map<String, dynamic> data =
               snapshot.data!.data() as Map<String, dynamic>;
           return Scaffold(
-            backgroundColor: Colors.red,
+            backgroundColor: Colors.white,
             appBar: AppBar(title: Text(widget.title)),
             body: Center(
               child: Container(
@@ -105,14 +94,14 @@ class _myPageState extends State<myPage> {
                     Container(
                       padding: EdgeInsets.only(
                           top: 25, bottom: 10, left: 10, right: 10),
-                      color: Colors.red,
+                      color: Colors.white,
                       child: SizedBox(
                         height: 300,
                         width: 350,
                         child: Column(
                           children: [
                             Container(
-                              color: Colors.grey,
+                              color: Colors.white,
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
@@ -153,7 +142,7 @@ class _myPageState extends State<myPage> {
                                                   image: AssetImage(
                                                       item.toString()))),
                                         ),
-                                        color: Colors.grey,
+                                        color: Colors.white,
                                       ))
                                   .toList(),
                             )),
@@ -174,6 +163,7 @@ class _myPageState extends State<myPage> {
                         ),
                       ),
                     ),
+                    Container(height: 20.0),
                     Container(
                       padding: EdgeInsets.all(20),
                       color: Colors.amber,

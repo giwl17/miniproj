@@ -7,6 +7,7 @@ class EditProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: MyEditProfile(),
       routes: {
         '/showprofile': (context) => const ShowProfilePage(),

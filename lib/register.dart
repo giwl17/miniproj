@@ -17,6 +17,7 @@ class _RegisterPageState extends State<RegisterPage> {
   Widget build(BuildContext context) {
     const appTitle = 'สมัครสมาชิก';
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: appTitle,
       routes: {
         '/login': (context) => const MyApp(),
