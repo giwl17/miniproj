@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:miniproj/editProfile.dart';
+import 'package:miniproj/foodlist.dart';
 
 class ShowProfilePage extends StatelessWidget {
   const ShowProfilePage({super.key});
@@ -10,9 +12,13 @@ class ShowProfilePage extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        primarySwatch: Colors.grey,
+        primarySwatch: Colors.red,
       ),
       home: const MyShowProfilePage(title: 'โปรไฟล์'),
+      routes: {
+        '/editprofile': (context) => EditProfilePage(),
+        '/foodlist': (context) => FoodListPage(),
+      },
     );
   }
 }
@@ -33,12 +39,12 @@ class _MyShowProfilePageState extends State<MyShowProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.red,
+      backgroundColor: Colors.white,
       appBar: AppBar(
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
-            // Navigator.pop(context, '/reset');
+            Navigator.popAndPushNamed(context, '/foodlist');
           },
         ),
         title: Text(widget.title),
@@ -83,10 +89,10 @@ class _MyShowProfilePageState extends State<MyShowProfilePage> {
                   style: TextStyle(
                       fontSize: 20,
                       decoration: TextDecoration.underline,
-                      color: Colors.white),
+                      color: Colors.blue),
                 ),
                 onTap: () {
-                  print("value of your text");
+                  Navigator.pushNamed(context, '/editprofile');
                   // Navigator.pushNamed(context, '/edit');
                 },
               )

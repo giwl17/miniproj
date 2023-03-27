@@ -107,14 +107,6 @@ class _MyHomePageState extends State<MyHomePage> {
                     ),
                   ),
                   loginButton(),
-                  const Padding(
-                    padding: EdgeInsets.only(bottom: 20),
-                    child: Text(
-                      "หรือ",
-                      style: TextStyle(fontSize: 20, color: Colors.white),
-                    ),
-                  ),
-                  buildEleButtonUseWithoutLogin(),
                 ],
               )
             ],
