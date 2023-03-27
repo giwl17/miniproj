@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
-void main() {
-  runApp(const MyApp());
-}
-
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class ShowProfilePage extends StatelessWidget {
+  const ShowProfilePage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -14,26 +12,24 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.grey,
       ),
-      // initialRoute: '/',
-
-      // routes: {
-      //   '/': (context) => edit(),
-      // },
-      home: const MyHomePage(title: 'โปรไฟล์'),
+      home: const MyShowProfilePage(title: 'โปรไฟล์'),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
+class MyShowProfilePage extends StatefulWidget {
+  const MyShowProfilePage({super.key, required this.title});
 
   final String title;
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<MyShowProfilePage> createState() => _MyShowProfilePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _MyShowProfilePageState extends State<MyShowProfilePage> {
+  final auth = FirebaseAuth.instance;
+  final FirebaseFirestore db = FirebaseFirestore.instance;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,73 +43,94 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         title: Text(widget.title),
       ),
-      body: Center(
-        child: ListView(
-          padding: const EdgeInsets.all(10),
-          children: <Widget>[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                InkWell(
+      body: FutureBuilder<DocumentSnapshot>(
+        future: db
+            .collection('users')
+            .doc(auth.currentUser?.email.toString())
+            .get(),
+        builder:
+            (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+          if (snapshot.hasError) {
+            return const Text("Something went wrong");
+          }
+
+          if (snapshot.hasData && !snapshot.data!.exists) {
+            return const Text('Document does not exist');
+          }
+
+          if (snapshot.connectionState == ConnectionState.done) {
+            Map<String, dynamic> data =
+                snapshot.data!.data() as Map<String, dynamic>;
+            return showProfile(data);
+          }
+          return const Text('loading');
+        },
+      ),
+    );
+  }
+
+  Center showProfile(Map<String, dynamic> data) {
+    return Center(
+      child: ListView(
+        padding: const EdgeInsets.all(10),
+        children: <Widget>[
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              InkWell(
+                child: Text(
+                  'แก้ไข',
+                  style: TextStyle(
+                      fontSize: 20,
+                      decoration: TextDecoration.underline,
+                      color: Colors.white),
+                ),
+                onTap: () {
+                  print("value of your text");
+                  // Navigator.pushNamed(context, '/edit');
+                },
+              )
+            ],
+          ),
+          Padding(
+            padding: const EdgeInsets.all(30.0),
+            child: Container(
+              width: 200,
+              height: 200,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                image: DecorationImage(
+                  fit: BoxFit.contain,
+                  image: AssetImage('assets/6.png'),
+                ),
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Container(
+              height: 50,
+              color: Colors.amber[600],
+              child: Center(
                   child: Text(
-                    'แก้ไข',
-                    style: TextStyle(
-                        fontSize: 20,
-                        decoration: TextDecoration.underline,
-                        color: Colors.white),
-                  ),
-                  onTap: () {
-                    print("value of your text");
-                    // Navigator.pushNamed(context, '/edit');
-                  },
-                )
-              ],
+                'ชื่อ: ${data['name']}',
+                style: TextStyle(fontSize: 20.0),
+              )),
             ),
-            Padding(
-              padding: const EdgeInsets.all(30.0),
-              child: Container(
-                  width: 200,
-                  height: 200,
-                  decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      image: DecorationImage(
-                          fit: BoxFit.fill,
-                          image: AssetImage('asset/img/2.jpg')))),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Container(
+              height: 50,
+              color: Colors.amber[500],
+              child: Center(
+                  child: Text(
+                'นามสกุล: ${data['lastname']}',
+                style: TextStyle(fontSize: 20.0),
+              )),
             ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Container(
-                height: 50,
-                color: Colors.amber[600],
-                child: const Center(child: Text('Entry A')),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Container(
-                height: 50,
-                color: Colors.amber[500],
-                child: const Center(child: Text('Entry B')),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Container(
-                height: 50,
-                color: Colors.amber[100],
-                child: const Center(child: Text('Entry C')),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Container(
-                height: 50,
-                color: Colors.amber[100],
-                child: const Center(child: Text('Entry D')),
-              ),
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

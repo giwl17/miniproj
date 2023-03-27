@@ -5,6 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:miniproj/forgetpass.dart';
 import 'package:miniproj/main.dart';
 import 'package:miniproj/register.dart';
+import 'package:miniproj/showProfile.dart';
 
 class FoodListPage extends StatelessWidget {
   const FoodListPage({super.key});
@@ -27,6 +28,7 @@ class FoodListPage extends StatelessWidget {
         '/register': (context) => const RegisterPage(),
         '/forget': (context) => const ForgetPassPage(),
         '/foodlist': (context) => const FoodListPage(),
+        '/showprofile': (context) => const ShowProfilePage(),
       },
     );
   }
@@ -215,7 +217,9 @@ class _myPageState extends State<myPage> {
                     ListTile(
                       title: Text("โปรไฟล์"),
                       leading: Icon(Icons.person),
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.pushNamed(context, '/showprofile');
+                      },
                     ),
                     ListTile(
                       title: Text("ประวัติการรีวิว"),
