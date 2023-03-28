@@ -3,26 +3,27 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:miniproj/editProfile.dart';
 import 'package:miniproj/foodlist.dart';
+import 'package:miniproj/main.dart';
 
-class ShowProfilePage extends StatelessWidget {
-  const ShowProfilePage({super.key});
+// class ShowProfilePage extends StatelessWidget {
+//   const ShowProfilePage({super.key});
 
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.red,
-      ),
-      home: const MyShowProfilePage(title: 'โปรไฟล์'),
-      routes: {
-        '/editprofile': (context) => EditProfilePage(),
-        '/foodlist': (context) => FoodListPage(),
-      },
-    );
-  }
-}
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp(
+//       debugShowCheckedModeBanner: false,
+//       title: 'Flutter Demo',
+//       theme: ThemeData(
+//         primarySwatch: Colors.red,
+//       ),
+//       home: const MyShowProfilePage(title: 'โปรไฟล์'),
+//       routes: {
+//         '/editprofile': (context) => EditProfilePage(),
+//         '/foodlist': (context) => FoodListPage(),
+//       },
+//     );
+//   }
+// }
 
 class MyShowProfilePage extends StatefulWidget {
   const MyShowProfilePage({super.key, required this.title});

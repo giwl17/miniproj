@@ -71,7 +71,6 @@ class _MyHomePageState extends State<MyHomePage> {
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 48,
-                        fontFamily: 'Roboto',
                       ),
                     ),
                   ),
@@ -81,32 +80,14 @@ class _MyHomePageState extends State<MyHomePage> {
                 children: [
                   buildTextFieldEmail(),
                   buildTextFieldPass(),
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 20),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        InkWell(
-                          child: const Text(
-                            'สมัครสมาชิก',
-                            style: TextStyle(fontSize: 20.0),
-                          ),
-                          onTap: () {
-                            Navigator.pushNamed(context, '/register');
-                          },
-                        ),
-                        InkWell(
-                          child: const Text(
-                            'ลืมรหัสผ่าน',
-                            style: TextStyle(fontSize: 20.0),
-                          ),
-                          onTap: () {
-                            Navigator.pushNamed(context, '/forget');
-                          },
-                        )
-                      ],
-                    ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      registerInkWell(context),
+                      forgetInkWell(context)
+                    ],
                   ),
+                  SizedBox(height: 20.0),
                   loginButton(),
                 ],
               )
@@ -117,19 +98,27 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  ElevatedButton buildEleButtonUseWithoutLogin() {
-    return ElevatedButton(
-      style: ElevatedButton.styleFrom(
-        backgroundColor: Colors.green,
+  InkWell forgetInkWell(BuildContext context) {
+    return InkWell(
+      child: const Text(
+        'ลืมรหัสผ่าน',
+        style: TextStyle(fontSize: 20.0),
       ),
-      onPressed: () {},
-      child: const Padding(
-        padding: EdgeInsets.all(8.0),
-        child: Text(
-          'เข้าใช้งานโดยไม่เข้าสู่ระบบ',
-          style: TextStyle(fontSize: 20),
-        ),
+      onTap: () {
+        Navigator.pushNamed(context, '/forget');
+      },
+    );
+  }
+
+  InkWell registerInkWell(BuildContext context) {
+    return InkWell(
+      child: const Text(
+        'สมัครสมาชิก',
+        style: TextStyle(fontSize: 20.0),
       ),
+      onTap: () {
+        Navigator.pushNamed(context, '/register');
+      },
     );
   }
 
@@ -156,17 +145,29 @@ class _MyHomePageState extends State<MyHomePage> {
             try {
               await auth.signInWithEmailAndPassword(
                   email: email!, password: password!);
-
-              Navigator.pushReplacementNamed(context, '/foodlist');
+              print('Login: ${auth.currentUser?.email} success');
+              Navigator.pushNamed(context, '/foodlist');
             } on FirebaseAuthException catch (e) {
               if (e.code == 'user-not-found') {
                 print('No user found for that email.');
+                final snackBar = const SnackBar(
+                  content: Text('ไม่พบอีเมล กรุณาใส่ใหม่อีกครั้ง'),
+                );
+                ScaffoldMessenger.of(context).showSnackBar(snackBar);
               } else if (e.code == 'wrong-password') {
                 print('Wrong password provided for that user.');
+                final snackBar = const SnackBar(
+                  content: Text('รหัสผ่านผิด กรุณาใส่ใหม่อีกครั้ง'),
+                );
+                ScaffoldMessenger.of(context).showSnackBar(snackBar);
               }
             }
           } else {
             print('Invalid Form');
+            final snackBar = const SnackBar(
+              content: Text('กรุณากรอกอีเมลและรหัสผ่านให้ถูกต้อง'),
+            );
+            ScaffoldMessenger.of(context).showSnackBar(snackBar);
           }
         },
       ),

@@ -1,22 +1,29 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:miniproj/showProfile.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart';
+import 'package:miniproj/main.dart';
 
-class EditProfilePage extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: MyEditProfile(),
-      routes: {
-        '/showprofile': (context) => const ShowProfilePage(),
-      },
-    );
-  }
-}
+// class EditProfilePage extends StatelessWidget {
+//   @override
+//   Widget build(BuildContext context) {
+//     return MaterialApp(
+//       debugShowCheckedModeBanner: false,
+//       home: MyEditProfile(),
+//       routes: {
+//         '/showprofile': (context) => const MyShowProfilePage(title: 'โปรไฟล์'),
+//       },
+//     );
+//   }
+// }
 
 class MyEditProfile extends StatefulWidget {
+  const MyEditProfile({super.key});
+
   @override
   _MyEditProfileState createState() => _MyEditProfileState();
 }
@@ -27,6 +34,10 @@ class _MyEditProfileState extends State<MyEditProfile> {
 
   final auth = FirebaseAuth.instance;
   final FirebaseFirestore db = FirebaseFirestore.instance;
+
+  File? _imageFile;
+  final ImagePicker _picker = ImagePicker();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -41,25 +52,14 @@ class _MyEditProfileState extends State<MyEditProfile> {
           backgroundColor: Colors.red,
         ),
         body: ListView(
-          children: [
+          children: <Widget>[
             Container(
               padding: EdgeInsets.all(20),
               child: Column(
                 children: [
                   Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Container(
-                      width: 200,
-                      height: 200,
-                      // color: Colors.red,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        image: DecorationImage(
-                          fit: BoxFit.fill,
-                          image: AssetImage('assets/6.png'),
-                        ),
-                      ),
-                    ),
+                    child: imageProfile(),
                   ),
                   TextField(
                       controller: fname,
@@ -109,8 +109,11 @@ class _MyEditProfileState extends State<MyEditProfile> {
                                   'lastname': lname.text.trim()
                                 })
                                 .then((value) => print('User updated'))
-                                .catchError((error) =>
-                                    print('Failed to update user: ${error}'));
+                                .catchError(
+                                  (error) =>
+                                      print('Failed to update user: ${error}'),
+                                );
+                            Navigator.popAndPushNamed(context, '/showprofile');
                           },
                           child: Text(
                             "ยืนยันการแก้ไข",
@@ -125,6 +128,36 @@ class _MyEditProfileState extends State<MyEditProfile> {
             ),
           ],
         ));
+  }
+
+  Widget imageProfile() {
+    return Stack(
+      children: [
+        CircleAvatar(
+          radius: 90,
+          backgroundImage: _imageFile == null
+              ? AssetImage('assets/6.png')
+              : FileImage(File(_imageFile!.path)) as ImageProvider,
+        ),
+        Positioned(
+          bottom: 10,
+          right: 10,
+          child: InkWell(
+            onTap: () {
+              showModalBottomSheet(
+                context: context,
+                builder: ((builder) => bottomSheet()),
+              );
+            },
+            child: Icon(
+              Icons.camera_alt,
+              color: Colors.red,
+              size: 28,
+            ),
+          ),
+        )
+      ],
+    );
   }
 
   OutlineInputBorder myinputborder() {
@@ -148,4 +181,53 @@ class _MyEditProfileState extends State<MyEditProfile> {
   }
 
   //create a function like this so that you can use it wherever you want
+  Widget bottomSheet() {
+    return Container(
+      height: 100.0,
+      width: MediaQuery.of(context).size.width,
+      margin: EdgeInsets.symmetric(
+        horizontal: 20,
+        vertical: 20,
+      ),
+      child: Column(
+        children: [
+          Text(
+            'Choose Profile Photo',
+            style: TextStyle(fontSize: 20.0),
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: [
+              TextButton.icon(
+                onPressed: () {
+                  takePhoto(ImageSource.camera);
+                },
+                icon: Icon(Icons.camera),
+                label: Text('Camera'),
+              ),
+              TextButton.icon(
+                onPressed: () {
+                  takePhoto(ImageSource.gallery);
+                },
+                icon: Icon(Icons.image),
+                label: Text('Gallery'),
+              )
+            ],
+          )
+        ],
+      ),
+    );
+  }
+
+  void takePhoto(ImageSource source) async {
+    final pickedFile =
+        await ImagePicker().pickImage(source: source, imageQuality: 100);
+
+    setState(() {
+      _imageFile = File(pickedFile!.path);
+    });
+  }
 }

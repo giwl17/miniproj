@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:miniproj/editProfile.dart';
 import 'package:miniproj/forgetpass.dart';
 import 'package:miniproj/main.dart';
 import 'package:miniproj/register.dart';
@@ -26,7 +27,9 @@ class FoodListPage extends StatelessWidget {
         '/register': (context) => const RegisterPage(),
         '/forget': (context) => const ForgetPassPage(),
         '/foodlist': (context) => const FoodListPage(),
-        '/showprofile': (context) => const ShowProfilePage(),
+        '/showprofile': (context) => const MyShowProfilePage(title: 'โปรไฟล์'),
+        '/editprofile': (context) => MyEditProfile(),
+
       },
     );
   }
@@ -70,6 +73,7 @@ class _myPageState extends State<myPage> {
       future: db.collection('users').doc(auth.currentUser?.email).get(),
       builder:
           (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
+        print(auth.currentUser?.email);
         if (snapshot.hasError) {
           return const Text('Something went wrong');
         }
