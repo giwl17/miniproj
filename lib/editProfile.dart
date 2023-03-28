@@ -33,11 +33,16 @@ class _MyEditProfileState extends State<MyEditProfile> {
   TextEditingController lname = TextEditingController();
 
   final auth = FirebaseAuth.instance;
+
   final FirebaseFirestore db = FirebaseFirestore.instance;
+
+  final storage = FirebaseStorage.instance;
+  final storageRef = FirebaseStorage.instance.ref();
 
   File? _imageFile;
   final ImagePicker _picker = ImagePicker();
 
+  String? imageUrl;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -113,6 +118,8 @@ class _MyEditProfileState extends State<MyEditProfile> {
                                   (error) =>
                                       print('Failed to update user: ${error}'),
                                 );
+
+                            uploadImageProfile();
                             Navigator.popAndPushNamed(context, '/showprofile');
                           },
                           child: Text(
@@ -228,6 +235,18 @@ class _MyEditProfileState extends State<MyEditProfile> {
 
     setState(() {
       _imageFile = File(pickedFile!.path);
+    });
+  }
+
+  void uploadImageProfile() async {
+    //Stroage Image Upload
+    Reference ref = FirebaseStorage.instance
+        .ref()
+        .child('${auth.currentUser?.email}-profile.jpg');
+    await ref.putFile(File(_imageFile!.path));
+    ref.getDownloadURL().then((value) {
+      print(value);
+      imageUrl = value;
     });
   }
 }

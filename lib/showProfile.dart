@@ -1,10 +1,11 @@
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:miniproj/editProfile.dart';
 import 'package:miniproj/foodlist.dart';
 import 'package:miniproj/main.dart';
-
+import 'package:firebase_storage/firebase_storage.dart';
 // class ShowProfilePage extends StatelessWidget {
 //   const ShowProfilePage({super.key});
 
@@ -38,6 +39,9 @@ class _MyShowProfilePageState extends State<MyShowProfilePage> {
   final auth = FirebaseAuth.instance;
   final FirebaseFirestore db = FirebaseFirestore.instance;
 
+  final storageRef = FirebaseStorage.instance.ref();
+
+  String? imageUrl;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
