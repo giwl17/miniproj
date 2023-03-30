@@ -99,6 +99,7 @@ class _MyCustomFormState extends State<MyCustomForm> {
             'email': email.text.trim(),
             'name': fname.text.trim(),
             'lastname': lname.text.trim(),
+            'profile': ''
           };
 
           //db.collection('users').add(data);

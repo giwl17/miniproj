@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -30,7 +32,6 @@ class MyShowProfilePage extends StatefulWidget {
   const MyShowProfilePage({super.key, required this.title});
 
   final String title;
-
   @override
   State<MyShowProfilePage> createState() => _MyShowProfilePageState();
 }
@@ -40,8 +41,9 @@ class _MyShowProfilePageState extends State<MyShowProfilePage> {
   final FirebaseFirestore db = FirebaseFirestore.instance;
 
   final storageRef = FirebaseStorage.instance.ref();
+  String email = FirebaseAuth.instance.currentUser?.email.toString() ?? '';
+  final imageUrl = getImageUrl(refTarget: 'a@a.com').toString();
 
-  String? imageUrl;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -99,7 +101,6 @@ class _MyShowProfilePageState extends State<MyShowProfilePage> {
                 ),
                 onTap: () {
                   Navigator.pushNamed(context, '/editprofile');
-                  // Navigator.pushNamed(context, '/edit');
                 },
               )
             ],
@@ -113,7 +114,7 @@ class _MyShowProfilePageState extends State<MyShowProfilePage> {
                 shape: BoxShape.circle,
                 image: DecorationImage(
                   fit: BoxFit.contain,
-                  image: AssetImage('assets/6.png'),
+                  image: imageProfileShow(data),
                 ),
               ),
             ),
@@ -145,5 +146,25 @@ class _MyShowProfilePageState extends State<MyShowProfilePage> {
         ],
       ),
     );
+  }
+
+  static Future<String?> getImageUrl({required String refTarget}) async {
+    try {
+      final url =
+          await FirebaseStorage.instance.ref(refTarget).getDownloadURL();
+      return url;
+    } on FirebaseException catch (e) {
+      print('$e');
+      return null;
+    }
+  }
+
+  ImageProvider imageProfileShow(Map<String, dynamic> data) {
+    if (data['profile'] == '') {
+      return AssetImage('assets/6.png');
+    } else {
+      //return FileImage(File(data['profile']));
+      return AssetImage('assets/6.png');
+    }
   }
 }

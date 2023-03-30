@@ -42,7 +42,7 @@ class _MyEditProfileState extends State<MyEditProfile> {
   File? _imageFile;
   final ImagePicker _picker = ImagePicker();
 
-  String? imageUrl;
+  String? _imageUrl;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -104,23 +104,28 @@ class _MyEditProfileState extends State<MyEditProfile> {
                                 Color.fromARGB(255, 245, 168, 59)),
                           ),
                           onPressed: () {
-                            final users = db
-                                .collection('users')
-                                .doc(auth.currentUser?.email);
+                            String? _imgUrl;
+                            uploadImageProfile().then((value) {
+                              _imgUrl = value;
+                              final users = db
+                                  .collection('users')
+                                  .doc(auth.currentUser?.email);
 
-                            users
-                                .update({
-                                  'name': fname.text.trim(),
-                                  'lastname': lname.text.trim()
-                                })
-                                .then((value) => print('User updated'))
-                                .catchError(
-                                  (error) =>
-                                      print('Failed to update user: ${error}'),
-                                );
+                              users
+                                  .update({
+                                    'name': fname.text.trim(),
+                                    'lastname': lname.text.trim(),
+                                    'profile': _imgUrl.toString()
+                                  })
+                                  .then((value) => print('User updated'))
+                                  .catchError(
+                                    (error) => print(
+                                        'Failed to update user: ${error}'),
+                                  );
 
-                            uploadImageProfile();
-                            Navigator.popAndPushNamed(context, '/showprofile');
+                              Navigator.popAndPushNamed(
+                                  context, '/showprofile');
+                            });
                           },
                           child: Text(
                             "ยืนยันการแก้ไข",
@@ -236,17 +241,24 @@ class _MyEditProfileState extends State<MyEditProfile> {
     setState(() {
       _imageFile = File(pickedFile!.path);
     });
+
+    print('imageFile path: ${_imageFile?.path}');
+    print('imageFile : ${_imageFile}');
   }
 
-  void uploadImageProfile() async {
+  Future<String> uploadImageProfile() async {
     //Stroage Image Upload
     Reference ref = FirebaseStorage.instance
         .ref()
         .child('${auth.currentUser?.email}-profile.jpg');
     await ref.putFile(File(_imageFile!.path));
-    ref.getDownloadURL().then((value) {
-      print(value);
-      imageUrl = value;
+    final imgUrl = await ref.getDownloadURL().then((value) {
+      print('value : ${value}');
+      _imageUrl = value;
+      print('imageUrl${_imageUrl}');
+      return value;
     });
+    print('imgUrl: ${imgUrl}');
+    return imgUrl;
   }
 }
