@@ -29,7 +29,6 @@ class FoodListPage extends StatelessWidget {
         '/foodlist': (context) => const FoodListPage(),
         '/showprofile': (context) => const MyShowProfilePage(title: 'โปรไฟล์'),
         '/editprofile': (context) => MyEditProfile(),
-
       },
     );
   }
@@ -196,9 +195,8 @@ class _myPageState extends State<myPage> {
                       accountEmail: Text(auth.currentUser?.email ?? 'unknow'),
                       currentAccountPicture: ClipOval(
                         child: CircleAvatar(
-                          radius: 30.0,
-                          child: Image.asset("assets/6.png"),
-                          backgroundColor: Colors.transparent,
+                          radius: 90,
+                          backgroundImage: imageProfileShow(data),
                         ),
                       ),
                       decoration: const BoxDecoration(color: Colors.red
@@ -242,5 +240,17 @@ class _myPageState extends State<myPage> {
         return const Text('');
       }, //end FutureBuilder builduer:
     );
+  }
+
+  NetworkImage imageProfileShow(Map<String, dynamic> data) {
+    if (data['profile'] == '') {
+      // return AssetImage('assets/6.png');
+      return NetworkImage(
+          'https://cdn.icon-icons.com/icons2/1141/PNG/512/1486395884-account_80606.png');
+    } else {
+      //return FileImage(File(data['profile']));
+      //return Image.network(data['profile']);
+      return NetworkImage(data['profile']);
+    }
   }
 }

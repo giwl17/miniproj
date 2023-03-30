@@ -46,100 +46,100 @@ class _MyEditProfileState extends State<MyEditProfile> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back),
-            onPressed: () {
-              Navigator.popAndPushNamed(context, '/showprofile');
-            },
-          ),
-          title: Text("แก้ไขโปรไฟล์"),
-          backgroundColor: Colors.red,
+      appBar: AppBar(
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.popAndPushNamed(context, '/showprofile');
+          },
         ),
-        body: ListView(
-          children: <Widget>[
-            Container(
-              padding: EdgeInsets.all(20),
-              child: Column(
-                children: [
-                  Padding(
+        title: Text("แก้ไขโปรไฟล์"),
+        backgroundColor: Colors.red,
+      ),
+      body: ListView(
+        children: <Widget>[
+          Container(
+            padding: EdgeInsets.all(20),
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: imageProfile(),
+                ),
+                TextField(
+                    controller: fname,
+                    decoration: InputDecoration(
+                      labelText: "ชื่อ",
+                      prefixIcon: Icon(Icons.abc),
+                      border: myinputborder(),
+                      enabledBorder: myinputborder(),
+                      focusedBorder: myfocusborder(),
+                    )),
+                Container(height: 20),
+                TextField(
+                    controller: lname,
+                    decoration: InputDecoration(
+                      prefixIcon: Icon(Icons.abc),
+                      labelText: "นามสกุล",
+                      enabledBorder: myinputborder(),
+                      focusedBorder: myfocusborder(),
+                    )),
+                Container(height: 20),
+                Container(
+                  // height: 20,
+                  child: Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: imageProfile(),
-                  ),
-                  TextField(
-                      controller: fname,
-                      decoration: InputDecoration(
-                        labelText: "ชื่อ",
-                        prefixIcon: Icon(Icons.abc),
-                        border: myinputborder(),
-                        enabledBorder: myinputborder(),
-                        focusedBorder: myfocusborder(),
-                      )),
-                  Container(height: 20),
-                  TextField(
-                      controller: lname,
-                      decoration: InputDecoration(
-                        prefixIcon: Icon(Icons.abc),
-                        labelText: "นามสกุล",
-                        enabledBorder: myinputborder(),
-                        focusedBorder: myfocusborder(),
-                      )),
-                  Container(height: 20),
-                  Container(
-                    // height: 20,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: SizedBox(
-                        height: 50,
-                        width: 150,
-                        child: ElevatedButton(
-                          style: ButtonStyle(
-                            shape: MaterialStateProperty.all<
-                                RoundedRectangleBorder>(
-                              RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(50.0),
-                              ),
+                    child: SizedBox(
+                      height: 50,
+                      width: 150,
+                      child: ElevatedButton(
+                        style: ButtonStyle(
+                          shape:
+                              MaterialStateProperty.all<RoundedRectangleBorder>(
+                            RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(50.0),
                             ),
-                            backgroundColor: MaterialStatePropertyAll<Color>(
-                                Color.fromARGB(255, 245, 168, 59)),
                           ),
-                          onPressed: () {
-                            String? _imgUrl;
-                            uploadImageProfile().then((value) {
-                              _imgUrl = value;
-                              final users = db
-                                  .collection('users')
-                                  .doc(auth.currentUser?.email);
+                          backgroundColor: MaterialStatePropertyAll<Color>(
+                              Color.fromARGB(255, 245, 168, 59)),
+                        ),
+                        onPressed: () {
+                          String? _imgUrl;
+                          uploadImageProfile().then((value) {
+                            _imgUrl = value;
+                            final users = db
+                                .collection('users')
+                                .doc(auth.currentUser?.email);
 
-                              users
-                                  .update({
-                                    'name': fname.text.trim(),
-                                    'lastname': lname.text.trim(),
-                                    'profile': _imgUrl.toString()
-                                  })
-                                  .then((value) => print('User updated'))
-                                  .catchError(
-                                    (error) => print(
-                                        'Failed to update user: ${error}'),
-                                  );
+                            users
+                                .update({
+                                  'name': fname.text.trim(),
+                                  'lastname': lname.text.trim(),
+                                  'profile': _imgUrl.toString()
+                                })
+                                .then((value) => print('User updated'))
+                                .catchError(
+                                  (error) =>
+                                      print('Failed to update user: ${error}'),
+                                );
 
-                              Navigator.popAndPushNamed(
-                                  context, '/showprofile');
-                            });
-                          },
-                          child: Text(
-                            "ยืนยันการแก้ไข",
-                            style: TextStyle(color: Colors.black, fontSize: 18),
-                          ),
+                            Navigator.popAndPushNamed(context, '/showprofile');
+                          });
+                        },
+                        child: Text(
+                          "ยืนยันการแก้ไข",
+                          style: TextStyle(color: Colors.black, fontSize: 18),
                         ),
                       ),
                     ),
-                  )
-                ],
-              ),
+                  ),
+                )
+              ],
             ),
-          ],
-        ));
+          ),
+        ],
+      ),
+    );
   }
 
   Widget imageProfile() {
@@ -148,7 +148,8 @@ class _MyEditProfileState extends State<MyEditProfile> {
         CircleAvatar(
           radius: 90,
           backgroundImage: _imageFile == null
-              ? AssetImage('assets/6.png')
+              ? NetworkImage(
+                  'https://cdn.icon-icons.com/icons2/1141/PNG/512/1486395884-account_80606.png')
               : FileImage(File(_imageFile!.path)) as ImageProvider,
         ),
         Positioned(

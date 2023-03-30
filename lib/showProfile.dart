@@ -44,6 +44,8 @@ class _MyShowProfilePageState extends State<MyShowProfilePage> {
   String email = FirebaseAuth.instance.currentUser?.email.toString() ?? '';
   final imageUrl = getImageUrl(refTarget: 'a@a.com').toString();
 
+  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -107,19 +109,12 @@ class _MyShowProfilePageState extends State<MyShowProfilePage> {
           ),
           Padding(
             padding: const EdgeInsets.all(30.0),
-            child: Container(
-              width: 200,
-              height: 200,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                image: DecorationImage(
-                  fit: BoxFit.contain,
-                  image: imageProfileShow(data),
-                ),
-              ),
+            child: CircleAvatar(
+              radius: 90,
+              backgroundImage: imageProfileShow(data),
             ),
           ),
-          Padding(
+          Padding(  
             padding: const EdgeInsets.all(8.0),
             child: Container(
               height: 50,
@@ -159,12 +154,15 @@ class _MyShowProfilePageState extends State<MyShowProfilePage> {
     }
   }
 
-  ImageProvider imageProfileShow(Map<String, dynamic> data) {
+  NetworkImage imageProfileShow(Map<String, dynamic> data) {
     if (data['profile'] == '') {
-      return AssetImage('assets/6.png');
+      // return AssetImage('assets/6.png');
+      return NetworkImage(
+          'https://cdn.icon-icons.com/icons2/1141/PNG/512/1486395884-account_80606.png');
     } else {
       //return FileImage(File(data['profile']));
-      return AssetImage('assets/6.png');
+      //return Image.network(data['profile']);
+      return NetworkImage(data['profile']);
     }
   }
 }
