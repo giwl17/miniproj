@@ -8,19 +8,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:miniproj/main.dart';
 
-// class EditProfilePage extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       debugShowCheckedModeBanner: false,
-//       home: MyEditProfile(),
-//       routes: {
-//         '/showprofile': (context) => const MyShowProfilePage(title: 'โปรไฟล์'),
-//       },
-//     );
-//   }
-// }
-
 class MyEditProfile extends StatefulWidget {
   const MyEditProfile({super.key});
 

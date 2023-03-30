@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:miniproj/editProfile.dart';
 import 'package:miniproj/forgetpass.dart';
+import 'package:miniproj/login.dart';
 import 'package:miniproj/main.dart';
 import 'package:miniproj/register.dart';
 import 'package:miniproj/showProfile.dart';
@@ -22,8 +23,7 @@ class FoodListPage extends StatelessWidget {
       ),
       home: const myPage(title: 'แมวเป้ารีวิว'),
       routes: {
-        '/login': (context) =>
-            const MyHomePage(title: 'Flutter Demo Home Page'),
+        '/login': (context) => const LoginPage(title: 'เข้าสู่ระบบ'),
         '/register': (context) => const RegisterPage(),
         '/forget': (context) => const ForgetPassPage(),
         '/foodlist': (context) => const FoodListPage(),
