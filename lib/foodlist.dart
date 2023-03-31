@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:miniproj/addShop.dart';
 import 'package:miniproj/editProfile.dart';
 import 'package:miniproj/forgetpass.dart';
 import 'package:miniproj/login.dart';
@@ -29,6 +30,7 @@ class FoodListPage extends StatelessWidget {
         '/foodlist': (context) => const FoodListPage(),
         '/showprofile': (context) => const MyShowProfilePage(title: 'โปรไฟล์'),
         '/editprofile': (context) => MyEditProfile(),
+        '/addshop': (context) => addShopPage(),
       },
     );
   }
@@ -222,6 +224,13 @@ class _myPageState extends State<myPage> {
                       title: Text("ร้านค้าของคุณ"),
                       leading: Icon(Icons.shopping_bag_outlined),
                       onTap: () {},
+                    ),
+                    ListTile(
+                      title: Text("เพิ่มร้านค้า"),
+                      leading: Icon(Icons.shopping_bag_outlined),
+                      onTap: () {
+                        Navigator.pushNamed(context, '/addshop');
+                      },
                     ),
                     ListTile(
                       title: Text("ออกจากระบบ"),
