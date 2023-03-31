@@ -85,7 +85,7 @@ class _MyShowProfilePageState extends State<MyShowProfilePage> {
     );
   }
 
-  Center showProfile(Map<String, dynamic> data) {
+  Center showProfile(Map<String, dynamic> data) { 
     return Center(
       child: ListView(
         padding: const EdgeInsets.all(10),
