@@ -104,8 +104,6 @@ class _myPageState extends State<myPage> {
                   children: <Widget>[
                     // Text('${data['name']} ${data['lastname']} ${data['email']}'),
                     Container(
-                      padding: EdgeInsets.only(
-                          top: 25, bottom: 10, left: 10, right: 10),
                       color: Colors.white,
                       child: SizedBox(
                         height: 300,
@@ -115,14 +113,14 @@ class _myPageState extends State<myPage> {
                             Container(
                               color: Colors.white,
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   GestureDetector(
                                     onTap: () {
                                       Navigator.pushNamed(context, '/search');
                                     },
                                     child: Container(
-                                      width: 300,
+                                      width: 350,
                                       height: 50,
                                       decoration: BoxDecoration(
                                         gradient: LinearGradient(
@@ -133,7 +131,7 @@ class _myPageState extends State<myPage> {
                                           begin: Alignment.topLeft,
                                           end: Alignment.bottomRight,
                                         ),
-                                        borderRadius: BorderRadius.circular(20),
+                                        borderRadius: BorderRadius.circular(36),
                                         boxShadow: [
                                           BoxShadow(
                                             color: Colors.black12,
@@ -144,7 +142,7 @@ class _myPageState extends State<myPage> {
                                       ),
                                       child: Center(
                                         child: Text(
-                                          'Search Shop',
+                                          'กดที่นี่ เพื่อค้นหาร้านค้า',
                                           style: TextStyle(
                                             color: Colors.white,
                                             fontSize: 18,
