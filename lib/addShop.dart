@@ -337,34 +337,35 @@ class _addShopPageState extends State<addShopPage> {
 
     if (_formstate.currentState!.validate()) {
       _formstate.currentState!.save();
-      print(shopname.text);
-      print(time.text);
-      print(tel.text);
-      print(address.text);
-      print(text!.latitude);
-      uploadImageProfile().then((value) {
-        _imgUrl = value;
-        Map<String, String> data = {
-          'name': shopname.text.trim(),
-          'time': time.text.trim(),
-          'tel': tel.text.trim(),
-          'adddress': address.text.trim(),
-          'owner': emailCurrentUser.toString(),
-          'picture': _imgUrl.toString(),
-          'lat': text!.latitude.toString(),
-          'lng': text!.longitude.toString(),
-        };
-        db.collection('shops').add(data).then(
-              (documentSnapshot) =>
-                  print("added data with ID ${documentSnapshot.id}"),
-            );
-      });
+
+      Map<String, String> data = {
+        'name': shopname.text.trim(),
+        'time': time.text.trim(),
+        'tel': tel.text.trim(),
+        'adddress': address.text.trim(),
+        'owner': emailCurrentUser.toString(),
+        'lat': text!.latitude.toString(),
+        'lng': text!.longitude.toString(),
+        'picture': '',
+      };
+      uploadImageProfile(data['name'].toString()).then(
+        (value) {
+          _imgUrl = value;
+          data['picture'] = _imgUrl.toString();
+          print('data: ${data}');
+
+          db.collection('shops').add(data).then(
+                (documentSnapshot) =>
+                    print("added data with ID ${documentSnapshot.id}"),
+              );
+        },
+      );
     }
   }
 
-  Future<String> uploadImageProfile() async {
+  Future<String> uploadImageProfile(String shop) async {
     //Stroage Image Upload
-    Reference ref = FirebaseStorage.instance.ref().child('${shopname}}.jpg');
+    Reference ref = FirebaseStorage.instance.ref().child('${shop}.jpg');
     await ref.putFile(File(_shop!.path));
     final imgUrl = await ref.getDownloadURL().then((value) {
       print('value : ${value}');

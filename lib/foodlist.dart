@@ -8,6 +8,7 @@ import 'package:miniproj/forgetpass.dart';
 import 'package:miniproj/login.dart';
 import 'package:miniproj/main.dart';
 import 'package:miniproj/register.dart';
+import 'package:miniproj/shopOwnList.dart';
 import 'package:miniproj/showProfile.dart';
 
 class FoodListPage extends StatelessWidget {
@@ -31,6 +32,7 @@ class FoodListPage extends StatelessWidget {
         '/showprofile': (context) => const MyShowProfilePage(title: 'โปรไฟล์'),
         '/editprofile': (context) => MyEditProfile(),
         '/addshop': (context) => addShopPage(),
+        '/ownshop': (context) => const shopOwnListPage(),
       },
     );
   }
@@ -223,7 +225,9 @@ class _myPageState extends State<myPage> {
                     ListTile(
                       title: Text("ร้านค้าของคุณ"),
                       leading: Icon(Icons.shopping_bag_outlined),
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.pushNamed(context, '/ownshop');
+                      },
                     ),
                     ListTile(
                       title: Text("เพิ่มร้านค้า"),
