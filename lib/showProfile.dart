@@ -8,25 +8,6 @@ import 'package:miniproj/editProfile.dart';
 import 'package:miniproj/foodlist.dart';
 import 'package:miniproj/main.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-// class ShowProfilePage extends StatelessWidget {
-//   const ShowProfilePage({super.key});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       debugShowCheckedModeBanner: false,
-//       title: 'Flutter Demo',
-//       theme: ThemeData(
-//         primarySwatch: Colors.red,
-//       ),
-//       home: const MyShowProfilePage(title: 'โปรไฟล์'),
-//       routes: {
-//         '/editprofile': (context) => EditProfilePage(),
-//         '/foodlist': (context) => FoodListPage(),
-//       },
-//     );
-//   }
-// }
 
 class MyShowProfilePage extends StatefulWidget {
   const MyShowProfilePage({super.key, required this.title});
@@ -42,9 +23,7 @@ class _MyShowProfilePageState extends State<MyShowProfilePage> {
 
   final storageRef = FirebaseStorage.instance.ref();
   String email = FirebaseAuth.instance.currentUser?.email.toString() ?? '';
-  final imageUrl = getImageUrl(refTarget: 'a@a.com').toString();
-
-  
+  // final imageUrl = getImageUrl(refTarget: 'a@a.com').toString();
 
   @override
   Widget build(BuildContext context) {
@@ -85,7 +64,7 @@ class _MyShowProfilePageState extends State<MyShowProfilePage> {
     );
   }
 
-  Center showProfile(Map<String, dynamic> data) { 
+  Center showProfile(Map<String, dynamic> data) {
     return Center(
       child: ListView(
         padding: const EdgeInsets.all(10),
@@ -114,7 +93,7 @@ class _MyShowProfilePageState extends State<MyShowProfilePage> {
               backgroundImage: imageProfileShow(data),
             ),
           ),
-          Padding(  
+          Padding(
             padding: const EdgeInsets.all(8.0),
             child: Container(
               height: 50,

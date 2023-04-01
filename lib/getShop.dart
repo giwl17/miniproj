@@ -11,7 +11,7 @@ class getShopName extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<DocumentSnapshot>(
-        future: shops.doc(documentID).get(),  
+        future: shops.doc(documentID).get(),
         builder: ((context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             Map<String, dynamic> data =

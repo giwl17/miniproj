@@ -4,6 +4,8 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/material.dart';
 import 'package:miniproj/getShop.dart';
+import 'package:miniproj/main.dart';
+import 'package:miniproj/shopOwnDetail.dart';
 
 class shopOwnListPage extends StatefulWidget {
   const shopOwnListPage({super.key});
@@ -19,6 +21,7 @@ class _shopOwnListPageState extends State<shopOwnListPage> {
       FirebaseFirestore.instance.collection('shops');
 
   List<String> shopDocList = [];
+  List<String> shopDocListID = [];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,6 +40,16 @@ class _shopOwnListPageState extends State<shopOwnListPage> {
                 return Container(
                   child: Card(
                     child: ListTile(
+                      onTap: () {
+                        print(index);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                ShopOwnDetailPage(todo: index, listID: shopDocListID,),
+                          ),
+                        );
+                      },
                       leading: getShopPicture(documentID: shopDocList[index]),
                       title: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -60,7 +73,9 @@ class _shopOwnListPageState extends State<shopOwnListPage> {
     await shopsOwn.get().then(
           (snapshot) => snapshot.docs.forEach((element) {
             print(element.reference);
+            print(element.reference.id);
             shopDocList.add(element.reference.id);
+            shopDocListID.add(element.reference.id); //Document ID
           }),
         );
   }

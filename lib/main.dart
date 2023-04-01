@@ -5,6 +5,7 @@ import 'package:miniproj/forgetpass.dart';
 import 'package:miniproj/login.dart';
 import 'package:miniproj/register.dart';
 import 'package:miniproj/foodlist.dart';
+import 'package:miniproj/shopOwnDetail.dart';
 import 'package:provider/provider.dart';
 import 'package:miniproj/bloc.dart';
 

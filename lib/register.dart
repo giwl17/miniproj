@@ -94,7 +94,7 @@ class _MyCustomFormState extends State<MyCustomForm> {
         if (_formstate.currentState!.validate()) {
           print(email.text);
           print(password.text);
-
+          
           Map<String, String> data = {
             'email': email.text.trim(),
             'name': fname.text.trim(),

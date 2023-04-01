@@ -8,6 +8,7 @@ import 'package:miniproj/forgetpass.dart';
 import 'package:miniproj/login.dart';
 import 'package:miniproj/main.dart';
 import 'package:miniproj/register.dart';
+import 'package:miniproj/shopOwnDetail.dart';
 import 'package:miniproj/shopOwnList.dart';
 import 'package:miniproj/showProfile.dart';
 
@@ -90,7 +91,9 @@ class _myPageState extends State<myPage> {
               snapshot.data!.data() as Map<String, dynamic>;
           return Scaffold(
             backgroundColor: Colors.white,
-            appBar: AppBar(title: Text(widget.title)),
+            appBar: AppBar(
+              title: Text(widget.title),
+            ),
             body: Center(
               child: Container(
                 padding: EdgeInsets.all(9),
