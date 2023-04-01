@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:geolocator/geolocator.dart';
@@ -8,6 +9,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:miniproj/Gmap_page.dart';
 
 class addShopPage extends StatefulWidget {
   @override
@@ -43,6 +45,7 @@ class _addShopPageState extends State<addShopPage> {
   final auth = FirebaseAuth.instance;
   final FirebaseFirestore db = FirebaseFirestore.instance;
 
+  LatLng? text;
   @override
   void initState() {
     shopname.text = ""; //innitail value of text field
@@ -143,6 +146,8 @@ class _addShopPageState extends State<addShopPage> {
                                 //   MaterialPageRoute(
                                 //       builder: (context) => MapsPage()),
                                 // );
+
+                                _awaitReturnValueFromSecondScreen(context);
                               },
                               child: Text(
                                 "Choose location",
@@ -159,12 +164,15 @@ class _addShopPageState extends State<addShopPage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      Text(
-                        'Latlong',
-                        style: GoogleFonts.kanit(
-                            textStyle:
-                                TextStyle(fontSize: 18, color: Colors.black54)),
-                      ),
+                      text == ''
+                          ? Text(
+                              'Latlong',
+                              style: GoogleFonts.kanit(
+                                textStyle: TextStyle(
+                                    fontSize: 18, color: Colors.black54),
+                              ),
+                            )
+                          : Text(text.toString())
                     ],
                   ),
                   Container(height: 10),
@@ -333,7 +341,7 @@ class _addShopPageState extends State<addShopPage> {
       print(time.text);
       print(tel.text);
       print(address.text);
-
+      print(text!.latitude);
       uploadImageProfile().then((value) {
         _imgUrl = value;
         Map<String, String> data = {
@@ -343,6 +351,8 @@ class _addShopPageState extends State<addShopPage> {
           'adddress': address.text.trim(),
           'owner': emailCurrentUser.toString(),
           'picture': _imgUrl.toString(),
+          'lat': text!.latitude.toString(),
+          'lng': text!.longitude.toString(),
         };
         db.collection('shops').add(data).then(
               (documentSnapshot) =>
@@ -364,5 +374,19 @@ class _addShopPageState extends State<addShopPage> {
     });
     print('imgUrl: ${imgUrl}');
     return imgUrl;
+  }
+
+  void _awaitReturnValueFromSecondScreen(BuildContext context) async {
+    // start the SecondScreen and wait for it to finish with a result
+    final result = await Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => Gmap(),
+        ));
+
+    // after the SecondScreen result comes back update the Text widget with it
+    setState(() {
+      text = result;
+    });
   }
 }

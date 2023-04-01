@@ -146,6 +146,7 @@ class _LoginPageState extends State<LoginPage> {
       _formstate.currentState!.save();
 
       try {
+        print('Can login');
         await auth.signInWithEmailAndPassword(
             email: email!, password: password!);
         print('Login: ${auth.currentUser?.email} success');

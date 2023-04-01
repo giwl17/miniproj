@@ -5,6 +5,8 @@ import 'package:miniproj/forgetpass.dart';
 import 'package:miniproj/login.dart';
 import 'package:miniproj/register.dart';
 import 'package:miniproj/foodlist.dart';
+import 'package:provider/provider.dart';
+import 'package:miniproj/bloc.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -17,19 +19,26 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+            create: (_) => ProviderMaps()..getUserLocation()),
+        // ChangeNotifierProvider(create: (_) => Send())
+      ],
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          primarySwatch: Colors.blue,
+        ),
+        initialRoute: '/login',
+        routes: {
+          '/login': (context) => const LoginPage(title: 'เข้าสู่ระบบ'),
+          '/register': (context) => const RegisterPage(),
+          '/forget': (context) => const ForgetPassPage(),
+          '/foodlist': (context) => const FoodListPage(),
+        },
       ),
-      initialRoute: '/login',
-      routes: {
-        '/login': (context) => const LoginPage(title: 'เข้าสู่ระบบ'),
-        '/register': (context) => const RegisterPage(),
-        '/forget': (context) => const ForgetPassPage(),
-        '/foodlist': (context) => const FoodListPage(),
-      },
     );
   }
 }
