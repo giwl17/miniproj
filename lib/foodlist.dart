@@ -8,6 +8,7 @@ import 'package:miniproj/forgetpass.dart';
 import 'package:miniproj/login.dart';
 import 'package:miniproj/main.dart';
 import 'package:miniproj/register.dart';
+import 'package:miniproj/searchPage.dart';
 import 'package:miniproj/shopOwnDetail.dart';
 import 'package:miniproj/shopOwnList.dart';
 import 'package:miniproj/showProfile.dart';
@@ -34,6 +35,7 @@ class FoodListPage extends StatelessWidget {
         '/editprofile': (context) => MyEditProfile(),
         '/addshop': (context) => addShopPage(),
         '/ownshop': (context) => const shopOwnListPage(),
+        '/search': (context) => Search(),
       },
     );
   }
@@ -115,27 +117,42 @@ class _myPageState extends State<myPage> {
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.start,
                                 children: [
-                                  Padding(
-                                    padding: const EdgeInsets.all(10.0),
-                                    child: SizedBox(
-                                      width: 280,
-                                      child: SizedBox(
-                                        width: 50,
-                                        child: TextField(
-                                          decoration: InputDecoration(
-                                              border: OutlineInputBorder(),
-                                              labelText: 'ค้นหา',
-                                              filled: true,
-                                              fillColor: Colors.white),
+                                  GestureDetector(
+                                    onTap: () {
+                                      Navigator.pushNamed(context, '/search');
+                                    },
+                                    child: Container(
+                                      width: 300,
+                                      height: 50,
+                                      decoration: BoxDecoration(
+                                        gradient: LinearGradient(
+                                          colors: [
+                                            Colors.teal,
+                                            Colors.teal,
+                                          ],
+                                          begin: Alignment.topLeft,
+                                          end: Alignment.bottomRight,
+                                        ),
+                                        borderRadius: BorderRadius.circular(20),
+                                        boxShadow: [
+                                          BoxShadow(
+                                            color: Colors.black12,
+                                            offset: Offset(5, 5),
+                                            blurRadius: 10,
+                                          )
+                                        ],
+                                      ),
+                                      child: Center(
+                                        child: Text(
+                                          'Search Shop',
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.w500,
+                                          ),
                                         ),
                                       ),
                                     ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.all(0.0),
-                                    child: IconButton(
-                                        onPressed: () {},
-                                        icon: Icon(Icons.search)),
                                   ),
                                 ],
                               ),
