@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:miniproj/foodlist.dart';
 import 'package:miniproj/main.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -69,7 +70,9 @@ class _SearchState extends State<Search> {
             title: Card(
               child: TextField(
                 decoration: InputDecoration(
-                    prefixIcon: Icon(Icons.search), hintText: 'ค้นหา...'),
+                    hintStyle: GoogleFonts.kanit(),
+                    prefixIcon: Icon(Icons.search),
+                    hintText: 'ค้นหา...'),
                 onChanged: (val) {
                   setState(() {
                     name = val;

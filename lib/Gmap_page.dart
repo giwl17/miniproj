@@ -4,8 +4,6 @@ import 'package:miniproj/addShop.dart';
 import 'package:miniproj/bloc.dart';
 import 'package:provider/provider.dart';
 
-
-
 LatLng sendlo = LatLng(0, 0);
 String a = "";
 
@@ -18,7 +16,6 @@ class Gmap extends StatefulWidget {
 
 class _GmapState extends State<Gmap> {
   @override
-  
   Widget build(BuildContext context) {
     final provmaps = Provider.of<ProviderMaps>(context);
 
@@ -117,7 +114,7 @@ class _GmapState extends State<Gmap> {
                       // provmaps.getUserLocation,
                       backgroundColor: Colors.blueAccent,
                       child: Icon(
-                        Icons.gps_fixed,
+                        Icons.add_business,
                         color: Colors.white,
                       ),
                     ),

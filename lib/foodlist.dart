@@ -181,8 +181,10 @@ class _myPageState extends State<myPage> {
                   padding: EdgeInsets.zero,
                   children: [
                     UserAccountsDrawerHeader(
-                      accountName: Text('${data['name']} ${data['lastname']}'),
-                      accountEmail: Text(auth.currentUser?.email ?? 'unknow'),
+                      accountName: Text('${data['name']} ${data['lastname']}',
+                          style: GoogleFonts.kanit()),
+                      accountEmail: Text(auth.currentUser?.email ?? 'unknow',
+                          style: GoogleFonts.kanit()),
                       currentAccountPicture: ClipOval(
                         child: CircleAvatar(
                           radius: 90,
@@ -197,28 +199,31 @@ class _myPageState extends State<myPage> {
                           ),
                     ),
                     ListTile(
-                      title: Text("โปรไฟล์"),
+                      title: Text(
+                        "โปรไฟล์",
+                        style: GoogleFonts.kanit(),
+                      ),
                       leading: Icon(Icons.person),
                       onTap: () {
                         Navigator.pushNamed(context, '/showprofile');
                       },
                     ),
                     ListTile(
-                      title: Text("ร้านค้าของคุณ"),
+                      title: Text("ร้านค้าของคุณ", style: GoogleFonts.kanit()),
                       leading: Icon(Icons.shopping_bag_outlined),
                       onTap: () {
                         Navigator.pushNamed(context, '/ownshop');
                       },
                     ),
                     ListTile(
-                      title: Text("เพิ่มร้านค้า"),
+                      title: Text("เพิ่มร้านค้า", style: GoogleFonts.kanit()),
                       leading: Icon(Icons.shopping_bag_outlined),
                       onTap: () {
                         Navigator.pushNamed(context, '/addshop');
                       },
                     ),
                     ListTile(
-                      title: Text("ออกจากระบบ"),
+                      title: Text("ออกจากระบบ", style: GoogleFonts.kanit()),
                       leading: Icon(Icons.logout),
                       onTap: () {
                         auth.signOut();

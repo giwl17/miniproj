@@ -1,12 +1,10 @@
 import 'dart:io';
-
+import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/material.dart';
-import 'package:miniproj/showProfile.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:miniproj/main.dart';
 
 class MyEditProfile extends StatefulWidget {
   const MyEditProfile(
@@ -49,7 +47,7 @@ class _MyEditProfileState extends State<MyEditProfile> {
             Navigator.popAndPushNamed(context, '/showprofile');
           },
         ),
-        title: Text("แก้ไขโปรไฟล์"),
+        title: Text("แก้ไขโปรไฟล์", style: GoogleFonts.kanit()),
         backgroundColor: Colors.red,
       ),
       body: ListView(
@@ -132,7 +130,8 @@ class _MyEditProfileState extends State<MyEditProfile> {
                           },
                           child: Text(
                             "ยืนยันการแก้ไข",
-                            style: TextStyle(color: Colors.black, fontSize: 18),
+                            style: GoogleFonts.kanit(
+                                color: Colors.black, fontSize: 18),
                           ),
                         ),
                       ),

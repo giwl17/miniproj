@@ -207,7 +207,7 @@ class _editShopPage extends State<editShopPage> {
               Navigator.pushNamed(context, '/foodlist');
             },
             child: Text(
-              "ยืนยันการเพิ่มร้าน",
+              "ยืนยันการแก้ไขร้าน",
               style: GoogleFonts.kanit(
                   textStyle: TextStyle(fontSize: 18, color: Colors.black)),
             ),
