@@ -106,6 +106,10 @@ class _MyEditProfileState extends State<MyEditProfile> {
                             String? _imgUrl;
                             uploadImageProfile().then((value) {
                               _imgUrl = value;
+                              print('_imgUrl:::: ${_imgUrl.toString()}');
+                              if (_imgUrl == '') {
+                                _imgUrl = widget.profile;
+                              }
                               final users = db
                                   .collection('users')
                                   .doc(auth.currentUser?.email);
@@ -248,18 +252,22 @@ class _MyEditProfileState extends State<MyEditProfile> {
   }
 
   Future<String> uploadImageProfile() async {
-    //Stroage Image Upload
-    Reference ref = FirebaseStorage.instance
-        .ref()
-        .child('${auth.currentUser?.email}-profile.jpg');
-    await ref.putFile(File(_imageFile!.path));
-    final imgUrl = await ref.getDownloadURL().then((value) {
-      print('value : ${value}');
-      _imageUrl = value;
-      print('imageUrl${_imageUrl}');
-      return value;
-    });
-    print('imgUrl: ${imgUrl}');
-    return imgUrl;
+    //Storage Image Upload
+    if (_imageFile == null) {
+      return "";
+    } else {
+      Reference ref = FirebaseStorage.instance
+          .ref()
+          .child('${auth.currentUser?.email}-profile.jpg');
+      await ref.putFile(File(_imageFile!.path));
+      final imgUrl = await ref.getDownloadURL().then((value) {
+        print('value : ${value}');
+        _imageUrl = value;
+        print('imageUrl${_imageUrl}');
+        return value;
+      });
+      print('imgUrl: ${imgUrl}');
+      return imgUrl;
+    }
   }
 }
