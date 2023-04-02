@@ -6,6 +6,7 @@ import 'package:miniproj/addShop.dart';
 import 'package:miniproj/editProfile.dart';
 import 'package:miniproj/editShop.dart';
 import 'package:miniproj/forgetpass.dart';
+import 'package:miniproj/getShop.dart';
 import 'package:miniproj/login.dart';
 import 'package:miniproj/main.dart';
 import 'package:miniproj/register.dart';
@@ -57,6 +58,9 @@ class _myPageState extends State<myPage> {
   final FirebaseFirestore db = FirebaseFirestore.instance;
   final users = FirebaseFirestore.instance.collection('users');
 
+  List<String> shopDocList = [];
+  List<String> shopDocListID = [];
+
   @override
   Widget build(BuildContext context) {
     // This method is rerun every time setState is called, for instance as done
@@ -101,110 +105,75 @@ class _myPageState extends State<myPage> {
             body: Center(
               child: Container(
                 padding: EdgeInsets.all(9),
-                child: ListView(
-                  // mainAxisAlignment: MainAxisAlignment.start,
-                  children: <Widget>[
-                    // Text('${data['name']} ${data['lastname']} ${data['email']}'),
-                    Container(
-                      color: Colors.white,
-                      child: SizedBox(
-                        height: 300,
-                        width: 350,
-                        child: Column(
+                child: Container(
+                  color: Colors.white,
+                  child: Column(
+                    children: [
+                      Container(
+                        color: Colors.white,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Container(
-                              color: Colors.white,
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  GestureDetector(
-                                    onTap: () {
-                                      Navigator.pushNamed(context, '/search');
-                                    },
-                                    child: Container(
-                                      width: 350,
-                                      height: 50,
-                                      decoration: BoxDecoration(
-                                        gradient: LinearGradient(
-                                          colors: [
-                                            Colors.teal,
-                                            Colors.teal,
-                                          ],
-                                          begin: Alignment.topLeft,
-                                          end: Alignment.bottomRight,
-                                        ),
-                                        borderRadius: BorderRadius.circular(36),
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color: Colors.black12,
-                                            offset: Offset(5, 5),
-                                            blurRadius: 10,
-                                          )
-                                        ],
-                                      ),
-                                      child: Center(
-                                        child: Text(
-                                          'กดที่นี่ เพื่อค้นหาร้านค้า',
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.w500,
-                                          ),
-                                        ),
-                                      ),
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.pushNamed(context, '/search');
+                              },
+                              child: Container(
+                                width: 350,
+                                height: 50,
+                                decoration: BoxDecoration(
+                                  gradient: LinearGradient(
+                                    colors: [
+                                      Colors.teal,
+                                      Colors.teal,
+                                    ],
+                                    begin: Alignment.topLeft,
+                                    end: Alignment.bottomRight,
+                                  ),
+                                  borderRadius: BorderRadius.circular(36),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Colors.black12,
+                                      offset: Offset(5, 5),
+                                      blurRadius: 10,
+                                    )
+                                  ],
+                                ),
+                                child: Center(
+                                  child: Text(
+                                    'กดที่นี่ เพื่อค้นหาร้านค้า',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w500,
                                     ),
                                   ),
-                                ],
+                                ),
                               ),
                             ),
-                            Container(
-                                child: CarouselSlider(
-                              options: CarouselOptions(),
-                              items: list
-                                  .map((item) => Container(
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(5.0),
-                                          child: Center(
-                                              child: Image(
-                                                  image: AssetImage(
-                                                      item.toString()))),
-                                        ),
-                                        color: Colors.white,
-                                      ))
-                                  .toList(),
-                            )),
                           ],
                         ),
                       ),
-                    ),
-                    Container(
-                      padding: EdgeInsets.all(20),
-                      color: Colors.amber,
-                      child: SizedBox(
-                        height: 75,
-                        width: 10,
-                        child: ListTile(
-                          onTap: () {},
-                          title: Text(
-                              "ร้าน ข้าวมันไก่ผัดหมูพริกแกงไก่กรอบหมูสับผัดไข่ดาวหมูกระเทียมพริกแกงใส่ใบกระเพรา"),
+                      Container(
+                        child: CarouselSlider(
+                          options: CarouselOptions(),
+                          items: list
+                              .map((item) => Container(
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(5.0),
+                                      child: Center(
+                                          child: Image(
+                                              image:
+                                                  AssetImage(item.toString()))),
+                                    ),
+                                    color: Colors.white,
+                                  ))
+                              .toList(),
                         ),
                       ),
-                    ),
-                    Container(height: 20.0),
-                    Container(
-                      padding: EdgeInsets.all(20),
-                      color: Colors.amber,
-                      child: SizedBox(
-                        height: 75,
-                        width: 10,
-                        child: ListTile(
-                          onTap: () {},
-                          title: Text(
-                              "ร้าน ข้าวมันไก่ผัดหมูพริกแกงไก่กรอบหมูสับผัดไข่ดาวหมูกระเทียมพริกแกงใส่ใบกระเพรา"),
-                        ),
-                      ),
-                    ),
-                  ],
+                      shopListDisplay(),
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -275,6 +244,46 @@ class _myPageState extends State<myPage> {
     );
   }
 
+  FutureBuilder<dynamic> shopListDisplay() {
+    return FutureBuilder(
+        future: getShopList(),
+        builder: (context, snapshot) {
+          return Expanded(
+            child: ListView.builder(
+              shrinkWrap: true,
+              itemCount: shopDocList.length,
+              itemBuilder: (context, index) {
+                return Container(
+                  child: Card(
+                    child: ListTile(
+                      onTap: () {
+                        print(index);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ShopOwnDetailPage(
+                              todo: index,
+                              listID: shopDocListID,
+                            ),
+                          ),
+                        );
+                      },
+                      leading: getShopPicture(documentID: shopDocList[index]),
+                      title: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          getShopName(documentID: shopDocList[index]),
+                        ],
+                      ),
+                    ),
+                  ),
+                );
+              },
+            ),
+          );
+        });
+  }
+
   NetworkImage imageProfileShow(Map<String, dynamic> data) {
     if (data['profile'] == '') {
       // return AssetImage('assets/6.png');
@@ -285,5 +294,17 @@ class _myPageState extends State<myPage> {
       //return Image.network(data['profile']);
       return NetworkImage(data['profile']);
     }
+  }
+
+  Future getShopList() async {
+    final shopsOwn = FirebaseFirestore.instance.collection('shops');
+    await shopsOwn.get().then(
+          (snapshot) => snapshot.docs.forEach((element) {
+            print(element.reference);
+            print(element.reference.id);
+            shopDocList.add(element.reference.id);
+            shopDocListID.add(element.reference.id); //Document ID
+          }),
+        );
   }
 }

@@ -4,6 +4,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/material.dart';
 import 'package:miniproj/getShop.dart';
+import 'package:miniproj/foodlist.dart';
 import 'package:miniproj/main.dart';
 import 'package:miniproj/shopOwnDetail.dart';
 
@@ -26,6 +27,12 @@ class _shopOwnListPageState extends State<shopOwnListPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.popAndPushNamed(context, '/foodlist');
+          },
+        ),
         title: Text(
           'ร้านค้าของคุณ',
           style: GoogleFonts.kanit(),
@@ -45,8 +52,10 @@ class _shopOwnListPageState extends State<shopOwnListPage> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) =>
-                                ShopOwnDetailPage(todo: index, listID: shopDocListID,),
+                            builder: (context) => ShopOwnDetailPage(
+                              todo: index,
+                              listID: shopDocListID,
+                            ),
                           ),
                         );
                       },
