@@ -140,8 +140,11 @@ class _ShopOwnDetailPageState extends State<ShopOwnDetailPage> {
           ),
         ),
         Center(
-          heightFactor: 2.5,
-          child: checkifUSer(data),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [checkifUSerDelete(data), checkifUSer(data)],
+          ),
         ),
       ],
     );
@@ -203,25 +206,40 @@ class _ShopOwnDetailPageState extends State<ShopOwnDetailPage> {
 
   checkifUSer(data) {
     if (auth.currentUser?.email == data['owner']) {
-      return showElevation();
+      return showEditShop();
     }
     return Text('');
   }
 
-  Widget showElevation() {
-    return ElevatedButton(
-        onPressed: () {
-          /////navigator
-          // getLocation();
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => editShopPage(
-                    docShopID: widget.listID[widget.todo].toString())),
-          );
-          //widget.listID[widget.todo]
-        },
-        child: Text('แก้ไขร้านค้า'));
+  checkifUSerDelete(data) {
+    if (auth.currentUser?.email == data['owner']) {
+      return showDeleteShop();
+    }
+    return Text('');
+  }
+
+  Widget showEditShop() {
+    return ElevatedButton.icon(
+      style: const ButtonStyle(
+        backgroundColor: MaterialStatePropertyAll<Color>(Colors.green),
+      ),
+      onPressed: () {
+        /////navigator
+        // getLocation();
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => editShopPage(
+                  docShopID: widget.listID[widget.todo].toString())),
+        );
+        //widget.listID[widget.todo]
+      },
+      icon: Icon(Icons.edit), //icon data for elevated button
+      label: Text(
+        "แก้ไขร้านค้า",
+        style: TextStyle(fontSize: 20),
+      ),
+    );
   }
 
   getLocation() async {
@@ -232,5 +250,29 @@ class _ShopOwnDetailPageState extends State<ShopOwnDetailPage> {
     print(_position);
 
     return _position;
+  }
+
+  Widget showDeleteShop() {
+    return ElevatedButton.icon(
+      onPressed: () {
+        delete();
+        getLocation();
+        Navigator.pushNamed(context, '/foodlist');
+      },
+      icon: Icon(Icons.delete), //icon data for elevated button
+      label: Text(
+        "ลบร้านค้า",
+        style: TextStyle(fontSize: 20),
+      ),
+    );
+  }
+
+  Future<void> delete() async {
+    var del = db.collection('shops').doc(widget.listID[widget.todo]);
+    // await _db.collection("notes").doc("note1").delete();
+    final docUser = FirebaseFirestore.instance
+        .collection('shops')
+        .doc(widget.listID[widget.todo]);
+    docUser.delete();
   }
 }

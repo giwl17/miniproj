@@ -4,6 +4,8 @@ import 'package:miniproj/foodlist.dart';
 import 'package:miniproj/main.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:miniproj/shopOwnDetail.dart';
+import 'package:miniproj/shopOwnList.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({Key? key}) : super(key: key);
@@ -39,6 +41,7 @@ class Search extends StatefulWidget {
 class _SearchState extends State<Search> {
   String name = "";
   List<Map<String, dynamic>> data = [];
+  List<String> shopDocListID = [];
 
   addData() async {
     for (var element in data) {
@@ -86,7 +89,9 @@ class _SearchState extends State<Search> {
                     itemBuilder: (context, index) {
                       var data = snapshots.data!.docs[index].data()
                           as Map<String, dynamic>;
-
+                      var data2 = snapshots.data?.docs.forEach((element) {
+                        shopDocListID.add(element.reference.id);
+                      });
                       if (name.isEmpty) {
                         return ListTile(
                           title: Text(
@@ -112,6 +117,18 @@ class _SearchState extends State<Search> {
                             onTap: () {
                               // Navigator.pushNamed(context, '/foodlist');
                               print(index);
+                              print(data);
+                              print('data name : ${data['name']}');
+                              print(shopDocListID);
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => ShopOwnDetailPage(
+                                    todo: index,
+                                    listID: shopDocListID,
+                                  ),
+                                ),
+                              );
                             },
                             title: Text(
                               data['name'],
