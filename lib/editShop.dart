@@ -63,7 +63,7 @@ class _editShopPage extends State<editShopPage> {
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
           title: Text(
-            "เพิ่มร้านของคุณ",
+            "แก้ไขร้านของคุณ",
             style: GoogleFonts.kanit(),
           ),
           backgroundColor: Colors.red,

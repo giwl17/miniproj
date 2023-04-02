@@ -9,15 +9,21 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:miniproj/main.dart';
 
 class MyEditProfile extends StatefulWidget {
-  const MyEditProfile({super.key});
+  const MyEditProfile(
+      {super.key,
+      required this.name,
+      required this.lastname,
+      required this.profile});
+  final String name;
+  final String lastname;
+  final String profile;
 
   @override
   _MyEditProfileState createState() => _MyEditProfileState();
 }
 
 class _MyEditProfileState extends State<MyEditProfile> {
-  TextEditingController fname = TextEditingController();
-  TextEditingController lname = TextEditingController();
+  final _formstate = GlobalKey<FormState>();
 
   final auth = FirebaseAuth.instance;
 
@@ -30,8 +36,11 @@ class _MyEditProfileState extends State<MyEditProfile> {
   final ImagePicker _picker = ImagePicker();
 
   String? _imageUrl;
+
   @override
   Widget build(BuildContext context) {
+    TextEditingController fname = TextEditingController(text: widget.name);
+    TextEditingController lname = TextEditingController(text: widget.lastname);
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
@@ -45,83 +54,88 @@ class _MyEditProfileState extends State<MyEditProfile> {
       ),
       body: ListView(
         children: <Widget>[
-          Container(
-            padding: EdgeInsets.all(20),
-            child: Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: imageProfile(),
-                ),
-                TextField(
-                    controller: fname,
-                    decoration: InputDecoration(
-                      labelText: "ชื่อ",
-                      prefixIcon: Icon(Icons.abc),
-                      border: myinputborder(),
-                      enabledBorder: myinputborder(),
-                      focusedBorder: myfocusborder(),
-                    )),
-                Container(height: 20),
-                TextField(
+          Form(
+            key: _formstate,
+            child: Container(
+              padding: EdgeInsets.all(20),
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: imageProfile(),
+                  ),
+                  TextFormField(
+                      controller: fname,
+                      decoration: InputDecoration(
+                        labelText: "ชื่อ",
+                        prefixIcon: Icon(Icons.abc),
+                        border: myinputborder(),
+                        enabledBorder: myinputborder(),
+                        focusedBorder: myfocusborder(),
+                      )),
+                  Container(height: 20),
+                  TextFormField(
                     controller: lname,
                     decoration: InputDecoration(
                       prefixIcon: Icon(Icons.abc),
                       labelText: "นามสกุล",
                       enabledBorder: myinputborder(),
                       focusedBorder: myfocusborder(),
-                    )),
-                Container(height: 20),
-                Container(
-                  // height: 20,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: SizedBox(
-                      height: 50,
-                      width: 150,
-                      child: ElevatedButton(
-                        style: ButtonStyle(
-                          shape:
-                              MaterialStateProperty.all<RoundedRectangleBorder>(
-                            RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(50.0),
+                    ),
+                  ),
+                  Container(height: 20),
+                  Container(
+                    // height: 20,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: SizedBox(
+                        height: 50,
+                        width: 150,
+                        child: ElevatedButton(
+                          style: ButtonStyle(
+                            shape: MaterialStateProperty.all<
+                                RoundedRectangleBorder>(
+                              RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(50.0),
+                              ),
                             ),
+                            backgroundColor: MaterialStatePropertyAll<Color>(
+                                Color.fromARGB(255, 245, 168, 59)),
                           ),
-                          backgroundColor: MaterialStatePropertyAll<Color>(
-                              Color.fromARGB(255, 245, 168, 59)),
-                        ),
-                        onPressed: () {
-                          String? _imgUrl;
-                          uploadImageProfile().then((value) {
-                            _imgUrl = value;
-                            final users = db
-                                .collection('users')
-                                .doc(auth.currentUser?.email);
+                          onPressed: () {
+                            String? _imgUrl;
+                            uploadImageProfile().then((value) {
+                              _imgUrl = value;
+                              final users = db
+                                  .collection('users')
+                                  .doc(auth.currentUser?.email);
 
-                            users
-                                .update({
-                                  'name': fname.text.trim(),
-                                  'lastname': lname.text.trim(),
-                                  'profile': _imgUrl.toString()
-                                })
-                                .then((value) => print('User updated'))
-                                .catchError(
-                                  (error) =>
-                                      print('Failed to update user: ${error}'),
-                                );
+                              users
+                                  .update({
+                                    'name': fname.text.trim(),
+                                    'lastname': lname.text.trim(),
+                                    'profile': _imgUrl.toString()
+                                  })
+                                  .then((value) => print('User updated'))
+                                  .catchError(
+                                    (error) => print(
+                                        'Failed to update user: ${error}'),
+                                  );
 
-                            Navigator.popAndPushNamed(context, '/showprofile');
-                          });
-                        },
-                        child: Text(
-                          "ยืนยันการแก้ไข",
-                          style: TextStyle(color: Colors.black, fontSize: 18),
+                              Navigator.popAndPushNamed(
+                                  context, '/showprofile');
+                            });
+                          },
+                          child: Text(
+                            "ยืนยันการแก้ไข",
+                            style: TextStyle(color: Colors.black, fontSize: 18),
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                )
-              ],
+                  )
+                ],
+              ),
             ),
           ),
         ],
@@ -135,8 +149,7 @@ class _MyEditProfileState extends State<MyEditProfile> {
         CircleAvatar(
           radius: 90,
           backgroundImage: _imageFile == null
-              ? NetworkImage(
-                  'https://cdn.icon-icons.com/icons2/1141/PNG/512/1486395884-account_80606.png')
+              ? NetworkImage(widget.profile)
               : FileImage(File(_imageFile!.path)) as ImageProvider,
         ),
         Positioned(

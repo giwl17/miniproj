@@ -6,6 +6,7 @@ import 'package:miniproj/addShop.dart';
 import 'package:miniproj/editProfile.dart';
 import 'package:miniproj/editShop.dart';
 import 'package:miniproj/forgetpass.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:miniproj/getShop.dart';
 import 'package:miniproj/login.dart';
 import 'package:miniproj/main.dart';
@@ -34,7 +35,7 @@ class FoodListPage extends StatelessWidget {
         '/forget': (context) => const ForgetPassPage(),
         '/foodlist': (context) => const FoodListPage(),
         '/showprofile': (context) => const MyShowProfilePage(title: 'โปรไฟล์'),
-        '/editprofile': (context) => MyEditProfile(),
+        // '/editprofile': (context) => MyEditProfile(),
         '/addshop': (context) => addShopPage(),
         //'/editshop': (context) => editShopPage(),
         '/ownshop': (context) => const shopOwnListPage(),
@@ -63,12 +64,6 @@ class _myPageState extends State<myPage> {
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     final users = db.collection('users').get();
     List<String> list = [
       "assets/1.png",
@@ -100,7 +95,10 @@ class _myPageState extends State<myPage> {
           return Scaffold(
             backgroundColor: Colors.white,
             appBar: AppBar(
-              title: Text(widget.title),
+              title: Text(
+                widget.title,
+                style: GoogleFonts.kanit(),
+              ),
             ),
             body: Center(
               child: Container(
@@ -142,11 +140,10 @@ class _myPageState extends State<myPage> {
                                 child: Center(
                                   child: Text(
                                     'กดที่นี่ เพื่อค้นหาร้านค้า',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.w500,
-                                    ),
+                                    style: GoogleFonts.kanit(
+                                        textStyle: TextStyle(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.w400)),
                                   ),
                                 ),
                               ),
@@ -205,11 +202,6 @@ class _myPageState extends State<myPage> {
                       onTap: () {
                         Navigator.pushNamed(context, '/showprofile');
                       },
-                    ),
-                    ListTile(
-                      title: Text("ประวัติการรีวิว"),
-                      leading: Icon(Icons.history),
-                      onTap: () {},
                     ),
                     ListTile(
                       title: Text("ร้านค้าของคุณ"),

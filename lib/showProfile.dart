@@ -1,13 +1,9 @@
-import 'dart:io';
-
-import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:miniproj/editProfile.dart';
-import 'package:miniproj/foodlist.dart';
-import 'package:miniproj/main.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 
 class MyShowProfilePage extends StatefulWidget {
   const MyShowProfilePage({super.key, required this.title});
@@ -36,7 +32,10 @@ class _MyShowProfilePageState extends State<MyShowProfilePage> {
             Navigator.popAndPushNamed(context, '/foodlist');
           },
         ),
-        title: Text(widget.title),
+        title: Text(
+          widget.title,
+          style: GoogleFonts.kanit(),
+        ),
       ),
       body: FutureBuilder<DocumentSnapshot>(
         future: db
@@ -74,14 +73,26 @@ class _MyShowProfilePageState extends State<MyShowProfilePage> {
             children: [
               InkWell(
                 child: Text(
-                  'แก้ไข',
-                  style: TextStyle(
-                      fontSize: 20,
-                      decoration: TextDecoration.underline,
-                      color: Colors.blue),
+                  'แก้ไขโปรไฟล์',
+                  style: GoogleFonts.kanit(
+                    textStyle: TextStyle(
+                        fontSize: 20,
+                        decoration: TextDecoration.underline,
+                        color: Colors.blue),
+                  ),
                 ),
                 onTap: () {
-                  Navigator.pushNamed(context, '/editprofile');
+                  // Navigator.pushNamed(context, '/editprofile');
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => MyEditProfile(
+                        name: data['name'],
+                        lastname: data['lastname'],
+                        profile: data['profile'],
+                      ),
+                    ),
+                  );
                 },
               )
             ],
@@ -101,7 +112,7 @@ class _MyShowProfilePageState extends State<MyShowProfilePage> {
               child: Center(
                   child: Text(
                 'ชื่อ: ${data['name']}',
-                style: TextStyle(fontSize: 20.0),
+                style: GoogleFonts.kanit(fontSize: 20),
               )),
             ),
           ),
@@ -113,7 +124,7 @@ class _MyShowProfilePageState extends State<MyShowProfilePage> {
               child: Center(
                   child: Text(
                 'นามสกุล: ${data['lastname']}',
-                style: TextStyle(fontSize: 20.0),
+                style: GoogleFonts.kanit(fontSize: 20),
               )),
             ),
           ),
