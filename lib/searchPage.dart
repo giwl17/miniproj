@@ -60,22 +60,13 @@ class _SearchState extends State<Search> {
         appBar: AppBar(
             leading: IconButton(
                 onPressed: () {
-                  // Navigator.push(
-                  //     context,
-                  //     MaterialPageRoute(
-                  //       builder: (context) => myPage(
-                  //         title: "แมวเป้ารีวิว",
-                  //       ),
-                  //     ));
-                  // Navigator.pop(context);
                   Navigator.pushNamed(context, '/foodlist');
-                  // Navigator.pushReplacementNamed(context, '/foodlist');
                 },
                 icon: Icon(Icons.arrow_back)),
             title: Card(
               child: TextField(
                 decoration: InputDecoration(
-                    prefixIcon: Icon(Icons.search), hintText: 'Search...'),
+                    prefixIcon: Icon(Icons.search), hintText: 'ค้นหา...'),
                 onChanged: (val) {
                   setState(() {
                     name = val;
@@ -116,34 +107,23 @@ class _SearchState extends State<Search> {
                           .toString()
                           .toLowerCase()
                           .startsWith(name.toLowerCase())) {
-                        return Container(
-                          margin: EdgeInsets.all(10),
-                          padding: EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                            color: Color(0xFF94CCF9),
-                            border: Border.all(
-                              color: Color(0xFF04589A),
-                              width: 4,
+                        return Card(
+                          child: ListTile(
+                            onTap: () {
+                              // Navigator.pushNamed(context, '/foodlist');
+                              print(index);
+                            },
+                            title: Text(
+                              data['name'],
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                  color: Colors.black54,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold),
                             ),
-                            borderRadius: BorderRadius.circular(10.0),
-                          ),
-                          child: Card(
-                            child: ListTile(
-                              onTap: () {
-                                Navigator.pushNamed(context, '/foodlist');
-                              },
-                              title: Text(
-                                data['name'],
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                    color: Colors.black54,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                              leading: CircleAvatar(
-                                backgroundImage: NetworkImage(data['picture']),
-                              ),
+                            leading: CircleAvatar(
+                              backgroundImage: NetworkImage(data['picture']),
                             ),
                           ),
                         );

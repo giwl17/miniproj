@@ -1,22 +1,22 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
-import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:provider/provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:miniproj/Gmap_page.dart';
 
-class addShopPage extends StatefulWidget {
+class editShopPage extends StatefulWidget {
+  editShopPage({super.key, required this.docShopID});
+  final String docShopID;
+  //widget.listID[widget.todo]
   @override
-  _addShopPageState createState() => _addShopPageState();
+  _editShopPage createState() => _editShopPage();
 }
 
-class _addShopPageState extends State<addShopPage> {
+class _editShopPage extends State<editShopPage> {
   final _formstate = GlobalKey<FormState>();
   TextEditingController shopname = TextEditingController();
   TextEditingController time = TextEditingController();
@@ -203,6 +203,8 @@ class _addShopPageState extends State<addShopPage> {
             ),
             onPressed: () {
               addShop();
+              // Navigator.pop(context);
+              Navigator.pushNamed(context, '/foodlist');
             },
             child: Text(
               "ยืนยันการเพิ่มร้าน",
@@ -337,8 +339,8 @@ class _addShopPageState extends State<addShopPage> {
 
     if (_formstate.currentState!.validate()) {
       _formstate.currentState!.save();
-
-      Map<String, String> data = {
+      final users = db.collection('shops').doc(widget.docShopID);
+      Map<String, dynamic> data = {
         'name': shopname.text.trim(),
         'time': time.text.trim(),
         'tel': tel.text.trim(),
@@ -348,17 +350,20 @@ class _addShopPageState extends State<addShopPage> {
         'lng': text!.longitude.toString(),
         'picture': '',
       };
+      users.update(data);
       uploadImageProfile(data['name'].toString()).then(
         (value) {
           _imgUrl = value;
           data['picture'] = _imgUrl.toString();
           print('data: ${data}');
 
-          db.collection('shops').add(data).then(
-                (documentSnapshot) =>
-                    print("added data with ID ${documentSnapshot.id}"),
-              );
-          Navigator.popAndPushNamed(context, '/ownshop');
+          //update Firestore
+          db
+              .collection('shops')
+              .doc(widget.docShopID)
+              .update(data)
+              .then((value) => print('User updated'))
+              .catchError((error) => print('Failed to update user: ${error}'));
         },
       );
     }

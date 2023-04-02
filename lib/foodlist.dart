@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:miniproj/addShop.dart';
 import 'package:miniproj/editProfile.dart';
+import 'package:miniproj/editShop.dart';
 import 'package:miniproj/forgetpass.dart';
 import 'package:miniproj/login.dart';
 import 'package:miniproj/main.dart';
@@ -34,6 +35,7 @@ class FoodListPage extends StatelessWidget {
         '/showprofile': (context) => const MyShowProfilePage(title: 'โปรไฟล์'),
         '/editprofile': (context) => MyEditProfile(),
         '/addshop': (context) => addShopPage(),
+        //'/editshop': (context) => editShopPage(),
         '/ownshop': (context) => const shopOwnListPage(),
         '/search': (context) => Search(),
       },

@@ -17,15 +17,15 @@ class ProviderMaps with ChangeNotifier {
   GoogleMapController get mapController => _mapController;
 
   void getMoveCamera() async {
-    List<Placemark> newPlace = await GeocodingPlatform.instance
-        .placemarkFromCoordinates(
-            _initialposition.latitude, _initialposition.longitude,
-            localeIdentifier: "en_TH");
+    // List<Placemark> newPlace = await GeocodingPlatform.instance
+    //     .placemarkFromCoordinates(
+    //         _initialposition.latitude, _initialposition.longitude,
+    //         localeIdentifier: "en_TH");
 
-    // List<Placemark> placemark = await placemarkFromCoordinates(
-    //     _initialposition.latitude, _initialposition.longitude,
-    //     localeIdentifier: "en_TH");
-    // locationController.text = placemark[0].name!;
+    List<Placemark> placemark = await placemarkFromCoordinates(
+        _initialposition.latitude, _initialposition.longitude,
+        localeIdentifier: "en_TH");
+    locationController.text = placemark[0].name!;
   }
 
   void getUserLocation() async {
