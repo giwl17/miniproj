@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:miniproj/main.dart';
 
@@ -26,6 +27,37 @@ class MyForgerPassPage extends StatefulWidget {
 }
 
 class _MyForgerPassPageState extends State<MyForgerPassPage> {
+  final _emailController = TextEditingController();
+  @override
+  void dispose() {
+    _emailController.dispose();
+    super.dispose();
+  }
+
+  Future passwordReset() async {
+    try {
+      await FirebaseAuth.instance
+          .sendPasswordResetEmail(email: _emailController.text.trim());
+      showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              content: Text(
+                  "ลิ้งค์รีเซ็ตรหัสผ่านถูกส่งไปแล้วกรุณาเช็คที่ Email ของคุณ"),
+            );
+          });
+    } on FirebaseAuthException catch (e) {
+      print(e);
+      showDialog(
+          context: context,
+          builder: (context) {
+            return AlertDialog(
+              content: Text(e.message.toString()),
+            );
+          });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -68,12 +100,13 @@ class _MyForgerPassPageState extends State<MyForgerPassPage> {
                   ),
                   Padding(
                     padding: const EdgeInsets.only(bottom: 16.0),
-                    child: Text('ป้อน Email สำหรับการรีเซตรหัสผ่าน',
+                    child: Text('ป้อน Email สำหรับการรีเซ็ตรหัสผ่าน',
                         style: TextStyle(fontSize: 20)),
                   ),
                   Padding(
                     padding: const EdgeInsets.only(bottom: 32),
                     child: TextField(
+                      controller: _emailController,
                       decoration: InputDecoration(
                         border: OutlineInputBorder(),
                         hintText: 'Enter Email for reset password',
@@ -92,11 +125,12 @@ class _MyForgerPassPageState extends State<MyForgerPassPage> {
                             borderRadius: BorderRadius.circular(40.0),
                           ),
                         ),
-                        
                       ),
-                      onPressed: () {},
-                      child:
-                          Text('รีเซตรหัสผ่าน', style: TextStyle(fontSize: 20)),
+                      onPressed: () {
+                        passwordReset();
+                      },
+                      child: Text('รีเซ็ตรหัสผ่าน',
+                          style: TextStyle(fontSize: 20)),
                     ),
                   )
                 ],

@@ -74,7 +74,6 @@ class _MyCustomFormState extends State<MyCustomForm> {
           buildTextFieldLname(),
           buildTextFieldEmail(),
           buildTextFieldPass(),
-          buildTextFieldRePass(),
           registerButton()
         ],
       ),
@@ -94,7 +93,7 @@ class _MyCustomFormState extends State<MyCustomForm> {
         if (_formstate.currentState!.validate()) {
           print(email.text);
           print(password.text);
-          
+
           Map<String, String> data = {
             'email': email.text.trim(),
             'name': fname.text.trim(),
@@ -123,21 +122,6 @@ class _MyCustomFormState extends State<MyCustomForm> {
           print(e);
         }
       },
-    );
-  }
-
-  Padding buildTextFieldRePass() {
-    return const Padding(
-      padding: EdgeInsets.symmetric(horizontal: 8, vertical: 5),
-      child: TextField(
-        obscureText: true,
-        decoration: InputDecoration(
-          filled: true,
-          fillColor: Colors.white,
-          border: OutlineInputBorder(),
-          hintText: 'ยืนยัน Password',
-        ),
-      ),
     );
   }
 
