@@ -27,7 +27,7 @@ class FoodListPage extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.red,
       ),
-      home: const myPage(title: 'แมวเป้ารีวิว'),
+      home: const myPage(title: 'แมวเป้า'),
       routes: {
         '/login': (context) => const LoginPage(title: 'เข้าสู่ระบบ'),
         '/register': (context) => const RegisterPage(),
