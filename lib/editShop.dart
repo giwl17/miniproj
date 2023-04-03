@@ -204,7 +204,7 @@ class _editShopPage extends State<editShopPage> {
             onPressed: () {
               addShop();
               // Navigator.pop(context);
-              Navigator.pushNamed(context, '/foodlist');
+              Navigator.popAndPushNamed(context, '/foodlist');
             },
             child: Text(
               "ยืนยันการแก้ไขร้าน",
@@ -340,7 +340,7 @@ class _editShopPage extends State<editShopPage> {
     if (_formstate.currentState!.validate()) {
       _formstate.currentState!.save();
       final users = db.collection('shops').doc(widget.docShopID);
-      Map<String, dynamic> data = {
+      late Map<String, dynamic> data = {
         'name': shopname.text.trim(),
         'time': time.text.trim(),
         'tel': tel.text.trim(),
@@ -350,7 +350,7 @@ class _editShopPage extends State<editShopPage> {
         'lng': text!.longitude.toString(),
         'picture': '',
       };
-      users.update(data);
+      //users.update(data);
       uploadImageProfile(data['name'].toString()).then(
         (value) {
           _imgUrl = value;
